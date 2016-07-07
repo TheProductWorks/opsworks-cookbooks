@@ -6,7 +6,7 @@ node[:deploy].each do |app_name, deploy_config|
   # use template 'secrets.yml.erb' to generate 'config/secrets.yml'
   template "#{app_root}/config/secrets.yml" do
     source "secrets.yml.erb"
-    cookbook "secrets-config"
+    cookbook "rails"
 
     # set mode, group and owner of generated file
     mode "0660"

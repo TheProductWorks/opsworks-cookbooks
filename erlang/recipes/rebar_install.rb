@@ -8,12 +8,13 @@ bash 'install-rebar' do
   cwd '/usr/lib'
 
   code <<-EOH
-    git clone git://github.com/rebar/rebar.git
+    [ ! -d rebar ] && git clone git://github.com/rebar/rebar.git
     (cd rebar && ./bootstrap)
     ln -s /usr/lib/rebar/rebar /usr/bin/rebar
   EOH
 
   Chef::Log.info('Rebar successfully installed')
+  not_if "rebar --version"
 end
 
 # link "/usr/lib/rebar" do

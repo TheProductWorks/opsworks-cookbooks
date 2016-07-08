@@ -20,23 +20,6 @@
 # limitations under the License.
 #
 
-include_recipe 'build-essential'
-
-erlang_deps = case node['platform_family']
-              when 'debian'
-                %w(libncurses5-dev openssl libssl-dev)
-              when 'rhel', 'fedora'
-                %w(ncurses-devel openssl-devel)
-              else
-                []
-              end
-
-erlang_deps.each do |pkg|
-  package pkg do
-    action :install
-  end
-end
-
 erlang_version     = node['erlang']['source']['version']
 erlang_url         = node['erlang']['source']['url'] || "http://erlang.org/download/otp_src_#{erlang_version}.tar.gz"
 erlang_checksum    = node['erlang']['source']['checksum']

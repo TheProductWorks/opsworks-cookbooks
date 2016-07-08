@@ -12,4 +12,15 @@ node[:deploy].each do |application, deploy|
     deploy_data deploy
     app application
   end
+
+  bash 'build the app' do
+    user 'deploy'
+    cwd deploy[:current_path]
+    code <<-EOH
+      rebar get-deps
+      rebar compile
+    EOH
+    # rebar generate
+    #  - TODO make it run as the executable
+  end
 end

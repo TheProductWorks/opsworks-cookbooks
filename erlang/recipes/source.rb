@@ -29,18 +29,10 @@ erlang_cflags      = node['erlang']['source']['cflags']
 bash 'install-erlang' do
   cwd Chef::Config[:file_cache_path]
   code <<-EOH
+    wget #{erlang_url}
     tar -xzf otp_src_#{erlang_version}.tar.gz
     (cd otp_src_#{erlang_version} && ./configure #{erlang_build_flags} && make && make install)
   EOH
   environment('CFLAGS' => erlang_cflags)
-  action :nothing
-  not_if "erl -eval '{ok, Version} = file:read_file(filename:join([code:root_dir(), \"releases\", erlang:system_info(otp_release), \"OTP_VERSION\"])), erlang:display(erlang:binary_to_list(Version)), halt().' -noshell | grep #{erlang_version}"
 end
 
-remote_file File.join(Chef::Config[:file_cache_path], "otp_src_#{erlang_version}.tar.gz") do
-  source erlang_url
-  owner 'root'
-  mode '0644'
-  checksum erlang_checksum
-  notifies :run, 'bash[install-erlang]', :immediately
-end

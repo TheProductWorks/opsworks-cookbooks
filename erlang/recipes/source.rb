@@ -31,7 +31,11 @@ bash 'install-erlang' do
   code <<-EOH
     wget #{erlang_url}
     tar -xzf otp_src_#{erlang_version}.tar.gz
-    (cd otp_src_#{erlang_version} && ./configure #{erlang_build_flags} && make && make install)
+    cd otp_src_#{erlang_version}
+    (./configure #{erlang_build_flags} && make && make install)
+    rm /usr/local/bin/erl
+    rm /usr/bin/erl
+    ln -s $PWD/bin/erl /usr/bin/erl
   EOH
   environment('CFLAGS' => erlang_cflags)
 end

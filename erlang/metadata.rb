@@ -10,7 +10,7 @@ version           '3.0.0'
 #depends           'yum', '~> 3.0'
 #depends           'yum-epel'
 #depends           'yum-erlang_solutions'
-depends           'build-essential'
+#depends           'build-essential'
 
 recipe 'erlang', 'Installs Erlang via native package, source, or Erlang Solutions package'
 recipe 'erlang::package', 'Installs Erlang via native package'

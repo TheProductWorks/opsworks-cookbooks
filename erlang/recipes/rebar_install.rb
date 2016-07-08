@@ -6,10 +6,9 @@ bash 'install-rebar' do
   Chef::Log.info('Installing Rebar')
 
   code <<-EOH
-    git clone git://github.com/rebar/rebar.git
-    cd rebar
-    ./bootstrap
-    ln -s $PWD/rebar /usr/bin/rebar
+    git clone git://github.com/rebar/rebar.git /usr/lib/rebar
+    (cd /usr/lib/rebar && ./bootstrap)
+    ln -s /usr/lib/rebar /usr/bin/rebar
   EOH
   action :nothing
   not_if "rebar --version"

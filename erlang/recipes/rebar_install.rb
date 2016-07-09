@@ -2,22 +2,33 @@
 # Install Rebar using the git repo.
 #
 
-bash 'install-rebar' do
-  Chef::Log.info('Installing Rebar')
-  user 'root'
-  cwd '/usr/local/src'
+CWD='/usr/local/src'
+REBAR_LOCATION="#{CWD}/rebar"
+
+git REBAR_LOCATION do
+  Chef::Log.info('Cloning Rebar repo')
+  repository 'git@github.com/rebar/rebar.git'
+  revision 'master'
+  action :sync
+  notifies :run, 'bash[compile_rebar]', :immediately
+end
+
+bash 'compile_rebar' do
+  Chef::Log.info('Compiling Rebar')
+  cwd CWD
 
   code <<-EOH
-    [ ! -d rebar ] && git clone git://github.com/rebar/rebar.git
-    (cd rebar && ./bootstrap)
+    (cd #{REBAR_LOCATION} && ./bootstrap)
     ln -s /usr/local/src/rebar/rebar /usr/bin/rebar
   EOH
 
-  Chef::Log.info('Rebar successfully installed')
   action :nothing
   not_if "rebar --version"
+  notifies :run, 'link[setup_rebar_executable]', :immediately
 end
 
-# link "/usr/lib/rebar" do
-#   to "/usr/lib/rebar/rebar"
-# end
+link 'setup_rebar_executable' do
+  target_file "/usr/bin/rebar"
+  Chef::Log.info('Linking Rebar')
+  to "#{REBAR_LOCATION}/rebar"
+end

@@ -21,9 +21,29 @@
 
 case node[:platform]
 when "debian", "ubuntu"
-  erlpkg = node[:erlang][:gui_tools] ? "erlang" : "erlang-nox"
-  package erlpkg
-  package "erlang-dev"
+  if node[:erlang][:manual_compile]
+    remote_file "/usr/local/src/otp_src_#{node[:erlang][:version]}.tar.gz" do
+      source "http://www.erlang.org/download/otp_src_#{node[:erlang][:version]}.tar.gz"
+      action :create_if_missing
+      notifies :run, 'bash[install_erlang]', :immediate
+    end
+
+    bash "install_erlang" do
+      user "root"
+      cwd "/usr/local/src"
+      code <<-EOH
+        tar -zxf otp_src_#{node[:erlang][:version]}.tar.gz
+        cd otp_src_#{node[:erlang][:version]}/
+        sed -i 's/defined(FUTEX_WAIT_PRIVATE) && defined(FUTEX_WAKE_PRIVATE)/false/' erts/include/internal/pthread/ethr_event.h
+        (./configure && make install && ln -s /usr/local/bin/erl /bin/erl)
+      EOH
+      action :nothing
+    end
+  else
+    erlpkg = node[:erlang][:gui_tools] ? "erlang" : "erlang-nox"
+    package erlpkg
+    package "erlang-dev"
+  end
 when "redhat", "centos", "scientific"
   if node[:erlang][:manual_compile]
     remote_file "/usr/local/src/otp_src_#{node[:erlang][:version]}.tar.gz" do

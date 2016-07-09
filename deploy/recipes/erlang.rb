@@ -21,10 +21,14 @@ node[:deploy].each do |application, deploy|
     user 'deploy'
     cwd deploy[:current_path]
     code <<-EOH
-      rebar get-deps
-      rebar compile
+      make get-deps
+      make compile
+      (cd rel && rebar generate)
     EOH
     # rebar generate
     #  - TODO make it run as the executable
+    #  start the node:
+    #  deploy[:current_path]/rel/tp_api/bin/tp_api start
+    #  deploy[:current_path]/rel/tp_api/bin/tp_api stop
   end
 end

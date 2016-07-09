@@ -17,6 +17,7 @@ node[:deploy].each do |application, deploy|
     app application
   end
 
+=begin
   bash 'build the app' do
     user 'deploy'
     cwd deploy[:current_path]
@@ -27,4 +28,5 @@ node[:deploy].each do |application, deploy|
     # rebar generate
     #  - TODO make it run as the executable
   end
+=end
 end

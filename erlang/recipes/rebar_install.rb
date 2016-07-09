@@ -7,7 +7,7 @@ REBAR_LOCATION="#{CWD}/rebar"
 
 git REBAR_LOCATION do
   Chef::Log.info('Cloning Rebar repo')
-  repository 'git@github.com/rebar/rebar.git'
+  repository 'git@github.com:rebar/rebar.git'
   revision 'master'
   action :sync
   notifies :run, 'bash[compile_rebar]', :immediately

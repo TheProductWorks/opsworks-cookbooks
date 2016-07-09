@@ -35,7 +35,7 @@ when "debian", "ubuntu"
         tar -zxf otp_src_#{node[:erlang][:version]}.tar.gz
         cd otp_src_#{node[:erlang][:version]}/
         sed -i 's/defined(FUTEX_WAIT_PRIVATE) && defined(FUTEX_WAKE_PRIVATE)/false/' erts/include/internal/pthread/ethr_event.h
-        (./configure && make install && ln -s /usr/local/bin/erl /bin/erl)
+        (./configure #{node[:erlang][:build_flags]} && make install && ln -s /usr/local/bin/erl /bin/erl)
       EOH
       action :nothing
     end
@@ -59,7 +59,7 @@ when "redhat", "centos", "scientific"
         tar -zxf otp_src_#{node[:erlang][:version]}.tar.gz
         cd otp_src_#{node[:erlang][:version]}/
         sed -i 's/defined(FUTEX_WAIT_PRIVATE) && defined(FUTEX_WAKE_PRIVATE)/false/' erts/include/internal/pthread/ethr_event.h
-        (./configure && make install && ln -s /usr/local/bin/erl /bin/erl)
+        (./configure #{node[:erlang][:build_flags]} && make install && ln -s /usr/local/bin/erl /bin/erl)
       EOH
       action :nothing
     end

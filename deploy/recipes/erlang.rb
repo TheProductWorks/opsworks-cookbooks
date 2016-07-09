@@ -1,7 +1,7 @@
 include_recipe 'deploy'
 
 node[:deploy].each do |application, deploy|
-  if !deploy[:application_type].nil?
+  if deploy[:application_type] != 'erlang'
     Chef::Log.debug("Skipping deploy::erlang application #{application} as it is not an PHP app")
     next
   end

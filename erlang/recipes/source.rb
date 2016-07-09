@@ -1,11 +1,10 @@
 # Cookbook Name:: erlang
-# Recipe:: source
+# Recipe:: default
 # Author:: Joe Williams <joe@joetify.com>
-# Author:: Matt Ray <matt@chef.io>
-# Author:: Hector Castro <hector@basho.com>
+# Author:: Matt Ray <matt@opscode.com>
 #
 # Copyright 2008-2009, Joe Williams
-# Copyright 2011-2016, Chef Software Inc.
+# Copyright 2011, Opscode Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,23 +19,41 @@
 # limitations under the License.
 #
 
-erlang_version     = node['erlang']['source']['version']
-erlang_url         = node['erlang']['source']['url'] || "http://erlang.org/download/otp_src_#{erlang_version}.tar.gz"
-erlang_checksum    = node['erlang']['source']['checksum']
-erlang_build_flags = node['erlang']['source']['build_flags']
-erlang_cflags      = node['erlang']['source']['cflags']
+case node[:platform]
+when "debian", "ubuntu"
+  erlpkg = node[:erlang][:gui_tools] ? "erlang" : "erlang-nox"
+  package erlpkg
+  package "erlang-dev"
+when "redhat", "centos", "scientific"
+  if node[:erlang][:manual_compile]
+    remote_file "/usr/local/src/otp_src_#{node[:erlang][:version]}.tar.gz" do
+      source "http://www.erlang.org/download/otp_src_#{node[:erlang][:version]}.tar.gz"
+      action :create_if_missing
+      notifies :run, 'bash[install_erlang]', :immediate
+    end
 
-bash 'install-erlang' do
-  cwd Chef::Config[:file_cache_path]
-  code <<-EOH
-    wget #{erlang_url}
-    tar -xzf otp_src_#{erlang_version}.tar.gz
-    cd otp_src_#{erlang_version}
-    (./configure #{erlang_build_flags} && make && make install)
-    rm /usr/local/bin/erl
-    rm /usr/bin/erl
-    ln -s $PWD/bin/erl /usr/bin/erl
-  EOH
-  environment('CFLAGS' => erlang_cflags)
+    bash "install_erlang" do
+      user "root"
+      cwd "/usr/local/src"
+      code <<-EOH
+        tar -zxf otp_src_#{node[:erlang][:version]}.tar.gz
+        cd otp_src_#{node[:erlang][:version]}/
+        sed -i 's/defined(FUTEX_WAIT_PRIVATE) && defined(FUTEX_WAKE_PRIVATE)/false/' erts/include/internal/pthread/ethr_event.h
+        (./configure && make install && ln -s /usr/local/bin/erl /bin/erl)
+      EOH
+      action :nothing
+    end
+  else
+    include_recipe "yum::epel"
+    yum_repository "erlang" do
+      name "EPELErlangrepo"
+      url "http://repos.fedorapeople.org/repos/peter/erlang/epel-5Server/$basearch"
+      description "Updated erlang yum repository for RedHat / Centos 5.x - #{node['kernel']['machine']}"
+      action :add
+      only_if { node[:platform_version].to_f >= 5.0 && node[:platform_version].to_f < 6.0 }
+      package "erlang"
+    end
+  end
+else
+  package "erlang"
 end
-

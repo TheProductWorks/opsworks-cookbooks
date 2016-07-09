@@ -16,6 +16,7 @@ end
 bash 'compile_rebar' do
   Chef::Log.info('Compiling Rebar')
   cwd CWD
+  user 'root'
 
   code <<-EOH
     (cd #{REBAR_LOCATION} && ./bootstrap)

@@ -20,7 +20,6 @@ bash 'compile_rebar' do
 
   code <<-EOH
     (cd #{REBAR_LOCATION} && ./bootstrap)
-    ln -s /usr/local/src/rebar/rebar /usr/bin/rebar
   EOH
 
   action :nothing

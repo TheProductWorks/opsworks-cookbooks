@@ -1,0 +1,3 @@
+<%= @cable[:env] || "production" %>:
+  adapter: <%= @cable[:adapter] || 'async' %>
+  url: <%= @cable[:url] %>

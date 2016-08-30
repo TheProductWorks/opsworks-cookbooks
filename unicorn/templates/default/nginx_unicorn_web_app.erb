@@ -4,7 +4,7 @@ upstream unicorn_<%= @application[:domains].first %> {
 
 <% if @application[:nginx] && @application[:nginx][:action_cable] %>
 upstream websocket {
-  server 127.0.0.1:80;
+  server unix:<%= @application[:deploy_to]%>/shared/sockets/unicorn.sock fail_timeout=0;
 }
 <% end %>
 
@@ -33,7 +33,7 @@ server {
   }
 
   <% if @application[:nginx] && @application[:nginx][:action_cable] %>
-  location /cable/ {
+  location /cable {
     proxy_pass http://unicorn/cable;
     proxy_http_version 1.1;
     proxy_set_header Upgrade websocket;

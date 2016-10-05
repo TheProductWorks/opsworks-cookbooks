@@ -55,7 +55,7 @@ server {
 
   location / {
     <% if @application[:nginx] && @application[:nginx][:ssl_offloaded] -%>
-      if ($http_x_forwarded_proto != 'https') {
+      if ($http_x_forwarded_proto = 'http') {
         return 301 https://<%= @application[:nginx][:hostname] %>$request_uri;
       }
     <% end %>

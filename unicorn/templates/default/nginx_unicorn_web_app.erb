@@ -49,7 +49,10 @@ server {
   location @unicorn {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $http_host;
-    proxy_set_header X-Forwarded-Proto $scheme;
+
+  <% if node[:nginx] && node[:nginx][:ssl_offload] -%>
+    proxy_set_header X-Forwarded-Proto https;
+  <% end %>
     proxy_redirect off;
 
   <% if node[:nginx] && node[:nginx][:proxy_read_timeout] -%>

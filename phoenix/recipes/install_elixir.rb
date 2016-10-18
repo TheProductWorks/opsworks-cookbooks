@@ -35,7 +35,7 @@ execute "Make Elixir Source" do
 end
 
 execute "Move Built Elixir executables to /usr/local/bin" do
-  command "cp -r #{default[:elixir][:bin]}/* /usr/local/bin/"
+  command "cp -r #{node[:elixir][:bin]}/* /usr/local/bin/"
   action  :run
   not_if { ::File.exists?(node[:elixir][:bin]) }
 end

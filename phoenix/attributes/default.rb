@@ -1,5 +1,5 @@
 case node['platform']
-when 'redhat', 'centos', 'fedora'
+when 'redhat', 'centos', 'fedora', 'ubuntu'
   default[:erlang][:packages] = %w{ tar wget make perl gcc m4 ncurses ncurses-devel sed java-1.8.0-openjdk-devel gcc-c++ unixODBC-devel openssl-devel }
 
   default[:erlang][:source_tar] = "otp_src_18.3.tar.gz"

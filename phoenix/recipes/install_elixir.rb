@@ -31,11 +31,11 @@ execute "Make Elixir Source" do
   cwd     elixir_root
   command "export PATH=$PATH:#{node[:erlang][:bin]} && make"
   action  :run
-  not_if { ::File.exists?(node[:elixir][:bin]) }
+  not_if { ::File.exists?("#{node[:elixir][:bin]}/iex") }
 end
 
 execute "Move Built Elixir executables to /usr/local/bin" do
   command "cp -r #{node[:elixir][:bin]}/* /usr/local/bin/"
   action  :run
-  not_if { ::File.exists?(node[:elixir][:bin]) }
+  not_if { ::File.exists?("/usr/local/bin/iex") }
 end

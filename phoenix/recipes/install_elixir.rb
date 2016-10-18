@@ -21,21 +21,21 @@ execute "Extracting Archive #{node[:elixir][:source_tar]}" do
   not_if { ::File.exists?(elixir_src_path) }
 end
 
-execute "Make Elixir Source" do
-  cwd     elixir_src_path
-  command "export PATH=$PATH:#{node[:erlang][:bin]} && make"
-  action  :run
-  not_if { ::File.exists?(node[:elixir][:bin]) }
-end
-
 execute "Move Built Elixir to Install Location" do
   command "cp -r #{elixir_src_path} #{elixir_root}"
   action  :run
   not_if { ::File.exists?(node[:elixir][:bin]) }
 end
 
-file '/etc/profile.d/elixir.sh' do
-  content "export PATH=$PATH:#{node[:elixir][:bin]}"
-  action :create
-  mode 0755
+execute "Make Elixir Source" do
+  cwd     elixir_root
+  command "export PATH=$PATH:#{node[:erlang][:bin]} && make"
+  action  :run
+  not_if { ::File.exists?(node[:elixir][:bin]) }
+end
+
+execute "Move Built Elixir executables to /usr/local/bin" do
+  command "cp -r #{default[:elixir][:bin]}/* /usr/local/bin/"
+  action  :run
+  not_if { ::File.exists?(node[:elixir][:bin]) }
 end

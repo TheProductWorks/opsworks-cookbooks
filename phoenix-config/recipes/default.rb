@@ -1,4 +1,9 @@
 node[:deploy].each do |app_name, deploy_config|
+  if deploy_config[:application_type] != 'elixir'
+    Chef::Log.debug("Skipping setup config file #{app_name} as it is not a Phoenix app")
+    next
+  end
+
   # determine root folder of new app deployment
   app_root = "#{deploy_config[:deploy_to]}/current"
 

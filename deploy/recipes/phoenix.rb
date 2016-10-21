@@ -24,8 +24,8 @@ node[:deploy].each do |application, deploy|
 
     # set mode, group and owner of generated file
     mode "0660"
-    group deploy_config[:group]
-    owner deploy_config[:user]
+    group deploy[:group]
+    owner deploy[:user]
   end
 
   execute 'Get dependencies' do

@@ -42,7 +42,7 @@ node[:deploy].each do |application, deploy|
     command "mix local.hex --force && mix local.rebar --force && mix deps.get --only prod"
     action :run
   end
-
+=begin
   execute 'Compile' do
     user 'deploy'
     cwd deploy[:current_path]
@@ -66,6 +66,7 @@ node[:deploy].each do |application, deploy|
     command "mix release"
     action :run
   end
+=end
   # mix release
   #  start the node:
   #  deploy[:current_path]/rel/tp_phoenix/bin/tp_phoenix start

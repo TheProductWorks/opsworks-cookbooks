@@ -27,7 +27,6 @@ node[:deploy].each do |application, deploy|
   # use template 'prod.secret.exs.erb' to generate 'config/prod.secret.exs'
   template "#{deploy[:current_path]}/config/prod.secret.exs" do
     source "prod.secret.exs.erb"
-    cookbook "phoenix-config"
 
     # set mode, group and owner of generated file
     mode "0660"

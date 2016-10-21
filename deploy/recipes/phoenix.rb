@@ -17,13 +17,9 @@ node[:deploy].each do |application, deploy|
     app application
   end
 
-  Chef::Log.info("======== ENV: #{deploy.inspect}")
-
   # Set the mix home env
   sys_env_file = Chef::Util::FileEdit.new('/etc/environment')
-  {
-    'MIX_HOME' => '/home/deploy/.mix'
-  }.each do |name, val|
+  deploy['environment'].each do |name, val|
     sys_env_file.insert_line_if_no_match(/^#{name}\=/, "#{name}=\"#{val}\"")
     sys_env_file.write_file
   end

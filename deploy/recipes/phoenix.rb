@@ -21,8 +21,11 @@ node[:deploy].each do |application, deploy|
     user 'deploy'
     cwd deploy[:current_path]
     code <<-EOH
+      mix local.rebar --force
+      mix local.hex --force
       mix deps.get --only prod
       MIX_ENV=prod mix compile
+      MIX_ENV=prod mix phoenix.digest
       MIX_ENV=prod mix release
     EOH
     # mix generate

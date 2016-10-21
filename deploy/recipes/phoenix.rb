@@ -46,7 +46,7 @@ node[:deploy].each do |application, deploy|
     user 'deploy'
     cwd deploy[:current_path]
     environment 'MIX_HOME' => '/home/deploy/.mix', 'MIX_ENV' => 'prod', 'HEX_HOME' => '/home/deploy/.hex'
-    command "mix compile"
+    command "MIX_ENV=prod mix compile"
     action :run
   end
 
@@ -54,7 +54,7 @@ node[:deploy].each do |application, deploy|
     user 'deploy'
     cwd deploy[:current_path]
     environment 'MIX_HOME' => '/home/deploy/.mix', 'MIX_ENV' => 'prod', 'HEX_HOME' => '/home/deploy/.hex'
-    command "mix phoenix.digest"
+    command "MIX_ENV=prod mix phoenix.digest"
     action :run
   end
 
@@ -62,7 +62,7 @@ node[:deploy].each do |application, deploy|
     user 'deploy'
     cwd deploy[:current_path]
     environment 'MIX_HOME' => '/home/deploy/.mix', 'MIX_ENV' => 'prod', 'HEX_HOME' => '/home/deploy/.hex'
-    command "mix release"
+    command "MIX_ENV=prod mix release"
     action :run
   end
 

@@ -38,7 +38,7 @@ node[:deploy].each do |application, deploy|
   execute 'Get dependencies' do
     user 'deploy'
     cwd deploy[:current_path]
-    environment 'MIX_HOME' => '/home/deploy/.mix'
+    environment 'MIX_HOME' => '/home/deploy/.mix', 'HEX_HOME' => '/home/deploy/.hex'
     command "mix local.hex --force && mix local.rebar --force && mix deps.get --only prod"
     action :run
   end
@@ -46,7 +46,7 @@ node[:deploy].each do |application, deploy|
   execute 'Compile' do
     user 'deploy'
     cwd deploy[:current_path]
-    environment 'MIX_HOME' => '/home/deploy/.mix', 'MIX_ENV' => 'prod'
+    environment 'MIX_HOME' => '/home/deploy/.mix', 'MIX_ENV' => 'prod', 'HEX_HOME' => '/home/deploy/.hex'
     command "mix compile"
     action :run
   end
@@ -54,7 +54,7 @@ node[:deploy].each do |application, deploy|
   execute 'Digest' do
     user 'deploy'
     cwd deploy[:current_path]
-    environment 'MIX_HOME' => '/home/deploy/.mix', 'MIX_ENV' => 'prod'
+    environment 'MIX_HOME' => '/home/deploy/.mix', 'MIX_ENV' => 'prod', 'HEX_HOME' => '/home/deploy/.hex'
     command "mix phoenix.digest"
     action :run
   end
@@ -62,7 +62,7 @@ node[:deploy].each do |application, deploy|
   execute 'Make the release' do
     user 'deploy'
     cwd deploy[:current_path]
-    environment 'MIX_HOME' => '/home/deploy/.mix', 'MIX_ENV' => 'prod'
+    environment 'MIX_HOME' => '/home/deploy/.mix', 'MIX_ENV' => 'prod', 'HEX_HOME' => '/home/deploy/.hex'
     command "mix release"
     action :run
   end

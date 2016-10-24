@@ -14,6 +14,13 @@ node[:deploy].each do |application, deploy|
     include_recipe "opsworks_postgresql::client_install"
   end
 
+  # Set the mix home env
+  sys_env_file = Chef::Util::FileEdit.new('/etc/environment')
+  deploy['environment'].each do |name, val|
+    sys_env_file.insert_line_if_no_match(/^#{name}\=/, "#{name}=\"#{val}\"")
+    sys_env_file.write_file
+  end
+
   opsworks_deploy_dir do
     user deploy[:user]
     group deploy[:group]

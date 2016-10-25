@@ -21,9 +21,8 @@ node[:deploy].each do |application, deploy|
     user 'deploy'
     cwd deploy[:current_path]
     code <<-EOH
-      make get-deps
       make compile
-      (cd rel && rebar generate)
+      make release
     EOH
     # rebar generate
     #  - TODO make it run as the executable

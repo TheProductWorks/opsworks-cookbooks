@@ -17,13 +17,10 @@ node[:deploy].each do |application, deploy|
     app application
   end
 
-  execute 'build the release' do
-    Chef::Log.debug("INFO - #{deploy}")
-    next
+  execute 'rebar3 as prod release' do
+    Chef::Log.info("INFO - #{deploy.inspect}")
     user 'deploy'
     cwd deploy[:current_path]
-    command 'rebar3 as prod release'
-    action :run
 
     # rebar generate
     #  - TODO make it run as the executable

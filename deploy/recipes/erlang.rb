@@ -15,7 +15,7 @@ node[:deploy].each do |application, deploy|
   execute 'build the release' do
     user 'deploy'
     cwd deploy[:release_path]
-    command 'make release'
+    command 'rebar3 as prod release'
     action :run
 
     # rebar generate

@@ -2,7 +2,7 @@ include_recipe 'deploy'
 
 node[:deploy].each do |application, deploy|
   if deploy[:application_type] != 'erlang'
-    Chef::Log.debug("Skipping deploy::erlang application #{application} as it is not an PHP app")
+    Chef::Log.debug("Skipping deploy::erlang application #{application} as it is not an Erlang app")
     next
   end
 
@@ -15,7 +15,8 @@ node[:deploy].each do |application, deploy|
   execute 'build the release' do
     user 'deploy'
     cwd deploy[:release_path]
-    command 'rebar3 as prod release'
+    Chef::Log.info("Running: cd #{deploy[:release_path]} && rebar3 as prod release")
+    command "cd #{deploy[:release_path]} && rebar3 as prod release"
     action :run
 
     # rebar generate

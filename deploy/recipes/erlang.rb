@@ -14,9 +14,9 @@ node[:deploy].each do |application, deploy|
 
   execute 'build the release' do
     user 'deploy'
-    cwd deploy[:release_path]
-    Chef::Log.info("Running: cd #{deploy[:release_path]} && rebar3 as prod release")
-    command "cd #{deploy[:release_path]} && rebar3 as prod release"
+    cwd release_path
+    Chef::Log.info("Running: cd #{release_path} && rebar3 as prod release")
+    command "cd #{release_path} && rebar3 as prod release"
     action :run
 
     # rebar generate

@@ -12,22 +12,21 @@ node[:deploy].each do |application, deploy|
     path deploy[:deploy_to]
   end
 
-  opsworks_deploy do
-    deploy_data deploy
-    app application
-  end
-
-  bash 'build the app' do
+  execute 'build the release' do
     user 'deploy'
-    cwd deploy[:current_path]
-    code <<-EOH
-      make compile
-      make release
-    EOH
+    cwd deploy[:release_path]
+    command 'make release'
+    action :run
+
     # rebar generate
     #  - TODO make it run as the executable
     #  start the node:
     #  deploy[:current_path]/rel/tp_api/bin/tp_api start
     #  deploy[:current_path]/rel/tp_api/bin/tp_api stop
+  end
+
+  opsworks_deploy do
+    deploy_data deploy
+    app application
   end
 end

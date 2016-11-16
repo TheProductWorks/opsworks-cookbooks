@@ -17,6 +17,7 @@ node[:deploy].each do |application, deploy|
     app application
   end
 
+=begin
   execute 'rebar3 as prod release' do
     Chef::Log.info("INFO - #{deploy.inspect}")
     user 'deploy'
@@ -28,4 +29,5 @@ node[:deploy].each do |application, deploy|
     #  deploy[:current_path]/rel/tp_api/bin/tp_api start
     #  deploy[:current_path]/rel/tp_api/bin/tp_api stop
   end
+=end
 end

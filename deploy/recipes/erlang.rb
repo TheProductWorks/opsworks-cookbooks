@@ -6,6 +6,13 @@ node[:deploy].each do |application, deploy|
     next
   end
 
+  directory "/usr/local/#{application}" do
+    owner deploy[:user]
+    group deploy[:group]
+    mode '0755'
+    action :create
+  end
+
   opsworks_deploy_dir do
     user deploy[:user]
     group deploy[:group]

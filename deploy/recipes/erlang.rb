@@ -24,17 +24,19 @@ node[:deploy].each do |application, deploy|
     app application
   end
 
-=begin
-  execute 'rebar3 as prod release' do
-    Chef::Log.info("INFO - #{deploy.inspect}")
-    user 'deploy'
+  execute 'Generate and compile release' do
+    user deploy[:user]
     cwd deploy[:current_path]
+    command "rebar3 as prod release -o /usr/local/tp_api"
+    action :run
 
+    only_if do
+      File.exists?(deploy[:current_path])
+    end
     # rebar generate
     #  - TODO make it run as the executable
     #  start the node:
     #  deploy[:current_path]/rel/tp_api/bin/tp_api start
     #  deploy[:current_path]/rel/tp_api/bin/tp_api stop
   end
-=end
 end

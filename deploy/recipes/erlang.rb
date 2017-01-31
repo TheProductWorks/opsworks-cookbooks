@@ -11,6 +11,10 @@ node[:deploy].each do |application, deploy|
     group deploy[:group]
     mode '0755'
     action :create
+
+    not_if do
+      File.exists?("/usr/local/#{application}")
+    end
   end
 
   opsworks_deploy_dir do
@@ -27,6 +31,7 @@ node[:deploy].each do |application, deploy|
   execute 'Generate and compile release' do
     user deploy[:user]
     cwd deploy[:current_path]
+    environment 'HOME' => '/home/deploy'
     command "rebar3 as prod release -o /usr/local/tp_api"
     action :run
 

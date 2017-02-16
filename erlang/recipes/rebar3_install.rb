@@ -28,6 +28,8 @@ bash 'compile_rebar3' do
 end
 
 link 'setup_rebar3_executable' do
+  user 'root'
+
   target_file "/usr/bin/rebar3"
   Chef::Log.info('Linking Rebar3')
   to "#{REBAR_LOCATION}/rebar3"

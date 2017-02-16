@@ -11,8 +11,11 @@ when 'ubuntu', 'debian'
     action  :run
   end
 
-  execute "apt-get update"
-  execute "apt-get install elixir"
+  execute "apt-get -y update"
+
+  package "elixir" do
+    action :install
+  end
 
 when 'redhat', 'centos', 'fedora'
   elixir_tar_path    = Chef::Config[:file_cache_path] + '/' + node[:elixir][:source_tar]

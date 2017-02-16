@@ -38,10 +38,7 @@ node[:deploy].each do |application, deploy|
     only_if do
       File.exists?(deploy[:current_path])
     end
-    # rebar generate
-    #  - TODO make it run as the executable
-    #  start the node:
-    #  deploy[:current_path]/rel/tp_api/bin/tp_api start
-    #  deploy[:current_path]/rel/tp_api/bin/tp_api stop
   end
+
+  include_recipe "deploy::erlang-restart"
 end

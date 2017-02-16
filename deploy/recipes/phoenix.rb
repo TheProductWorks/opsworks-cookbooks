@@ -66,6 +66,14 @@ node[:deploy].each do |application, deploy|
     action :run
   end
 
+  execute "copy_release" do
+    command "cp -r deploy[:current_path]/rel/tp_phoenix /usr/local/tp_api"
+    user "deploy"
+  end
+
+  # deploy@tp-api2:/srv/www/tp_phoenix/current$ /usr/local/tp_api/tp_phoenix/bin/tp_phoenix start
+  # deploy@tp-api2:/srv/www/tp_phoenix/current$ /usr/local/tp_api/tp_phoenix/bin/tp_phoenix attach
+
   # mix release
   #  start the node:
   #  deploy[:current_path]/rel/tp_phoenix/bin/tp_phoenix start

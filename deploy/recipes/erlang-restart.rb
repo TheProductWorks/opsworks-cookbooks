@@ -13,6 +13,8 @@ node[:deploy].each do |application, deploy|
 
   execute "restart Server" do
     user deploy[:user]
+    cwd deploy[:current_path]
+    environment 'HOME' => '/home/deploy'
     command "/usr/local/tp_api/tp_api/bin/tp_api restart"
     action :run
 

@@ -13,6 +13,7 @@ node[:deploy].each do |application, deploy|
 
   execute "stop Server" do
     user deploy[:user]
+    environment 'HOME' => '/home/deploy'
     command "/usr/local/tp_api/tp_api/bin/tp_api stop"
     action :run
 

@@ -13,6 +13,7 @@ node[:deploy].each do |application, deploy|
 
   execute "restart Server" do
     user deploy[:user]
+    environment 'HOME' => '/home/deploy'
     command "/usr/local/tp_api/tp_phoenix/bin/tp_phoenix restart"
     action :run
 

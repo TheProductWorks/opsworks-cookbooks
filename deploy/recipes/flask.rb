@@ -29,7 +29,7 @@ node[:deploy].each do |application, deploy|
     user deploy[:user]
     cwd deploy[:current_path]
     environment 'HOME' => '/home/deploy'
-    command "python_virtual_evn/apps_3_6/bin/pip install -r requirements.txt"
+    command "python_env/bin/pip install -r requirements.txt"
     action :run
   end
 

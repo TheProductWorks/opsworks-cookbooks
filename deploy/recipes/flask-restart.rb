@@ -11,11 +11,11 @@ node[:deploy].each do |application, deploy|
     next
   end
 
-  execute "restart Server" do
+  execute "restart reporting server" do
     user deploy[:user]
     cwd deploy[:current_path]
     environment 'HOME' => '/home/deploy'
-    command "gunicorn -w 4 reporting:app"
+    command "python_env/bin/gunicorn -w 4 reporting:app"
     action :run
 
     only_if do

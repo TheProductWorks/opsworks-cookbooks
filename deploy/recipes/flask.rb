@@ -17,11 +17,19 @@ node[:deploy].each do |application, deploy|
     app application
   end
 
-  execute "install requirements.txt" do
+  execute "install-new-virtual-env" do
     user deploy[:user]
     cwd deploy[:current_path]
     environment 'HOME' => '/home/deploy'
-    command "pip install -r requirements.txt"
+    command "virtualenv -p python3.6 python_env"
+    action :run
+  end
+
+  execute "install-requirements-txt" do
+    user deploy[:user]
+    cwd deploy[:current_path]
+    environment 'HOME' => '/home/deploy'
+    command "python_virtual_evn/apps_3_6/bin/pip install -r requirements.txt"
     action :run
   end
 

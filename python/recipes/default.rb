@@ -23,3 +23,8 @@ package "python-pip" do
   retries 3
   retry_delay 5
 end
+
+execute "install-virtual-env" do
+  command "pip install virtualenv"
+end
+

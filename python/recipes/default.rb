@@ -17,11 +17,8 @@ package "python3.6" do
   retry_delay 5
 end
 
-package "python-pip" do
+execute "python-pip" do
   command "apt-get install python-pip"
-  action :install
-  retries 3
-  retry_delay 5
 end
 
 execute "install-virtual-env" do

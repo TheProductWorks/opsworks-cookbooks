@@ -1,6 +1,11 @@
 include_recipe 'deploy'
 
 node[:deploy].each do |application, deploy|
+  if deploy[:application_type] != 'flask'
+    Chef::Log.debug("Skipping deploy::flask application #{application} as it is not a Flask app")
+    next
+  end
+
   opsworks_deploy_dir do
     user deploy[:user]
     group deploy[:group]

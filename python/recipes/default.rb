@@ -3,7 +3,6 @@
 # Recipe:: default
 #
 
-
 execute "add-apt-repository-jonathonf-python-3.6" do
   command "add-apt-repository ppa:jonathonf/python-3.6"
 end
@@ -16,4 +15,8 @@ package "python3.6" do
   action :install
   retries 3
   retry_delay 5
+end
+
+execute "install-pip" do
+  command "apt-get install python-pip"
 end

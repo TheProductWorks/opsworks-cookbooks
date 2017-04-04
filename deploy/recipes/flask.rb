@@ -12,5 +12,13 @@ node[:deploy].each do |application, deploy|
     app application
   end
 
+  execute "install requirements.txt" do
+    user deploy[:user]
+    cwd deploy[:current_path]
+    environment 'HOME' => '/home/deploy'
+    command "pip install -r requirements.txt"
+    action :run
+  end
+
   include_recipe "deploy::flask-restart"
 end

@@ -17,6 +17,9 @@ package "python3.6" do
   retry_delay 5
 end
 
-execute "install-pip" do
-  command "apt-get install python-pip"
+package "python-pip" do
+  #command "apt-get install python-pip"
+  action :install
+  retries 3
+  retry_delay 5
 end

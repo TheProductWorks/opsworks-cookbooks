@@ -7,7 +7,7 @@ include_recipe "deploy"
 
 node[:deploy].each do |application, deploy|
   if deploy[:application_type] != 'elixir'
-    Chef::Log.debug("Skipping deploy::pheonix application #{application} as it is not an Phoenix / Elixir app")
+    Chef::Log.info("Skipping deploy::pheonix application #{application} as it is not an Phoenix / Elixir app")
     next
   end
 

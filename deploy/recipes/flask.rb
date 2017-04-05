@@ -1,26 +1,23 @@
 include_recipe 'deploy'
 
 node[:deploy].each do |application, deploy|
-  if deploy[:application_type] != 'flask'
+  if deploy[:application_type] != 'tp_reporting'
     Chef::Log.info("Skipping deploy::flask application #{application} as it is not a Flask app")
     next
   end
 
   opsworks_deploy_dir do
-    Chef::Log.info("Hello Mate")
     user deploy[:user]
     group deploy[:group]
     path deploy[:deploy_to]
   end
 
   opsworks_deploy do
-    Chef::Log.info("Hello Mate 2")
     deploy_data deploy
     app application
   end
 
   execute "install-new-virtual-env" do
-    Chef::Log.info("Hello Mate 3")
     user deploy[:user]
     cwd deploy[:current_path]
     environment 'HOME' => '/home/deploy'
@@ -29,7 +26,6 @@ node[:deploy].each do |application, deploy|
   end
 
   execute "install-requirements-txt" do
-    Chef::Log.info("Hello Mate 4")
     user deploy[:user]
     cwd deploy[:current_path]
     environment 'HOME' => '/home/deploy'

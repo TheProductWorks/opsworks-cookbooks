@@ -5,7 +5,7 @@
 
 include_recipe "deploy"
 
-node[:deploy].each do |application, deploy|
+node[:deploy].each do |application, deploy, gunicorn_processes|
   if deploy[:application_type] != 'flask'
     Chef::Log.info("Skipping deploy::flask application #{application} as it is not a Flask app")
     next

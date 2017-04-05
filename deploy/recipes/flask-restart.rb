@@ -7,6 +7,7 @@ include_recipe "deploy"
 
 node[:deploy].each do |application, deploy|
   if deploy[:application_type] != 'tp_reporting'
+    Chef::Log.info("application_type is #{deploy[:application_type]}")
     Chef::Log.info("Skipping deploy::flask application #{application} as it is not a Flask app")
     next
   end

@@ -12,6 +12,7 @@ node[:deploy].each do |application, deploy, gunicorn_processes|
   end
 
   execute "stop-reporting-service" do
+    Chef::Log.info("Executing stop-reporting-service")
     timeout 180
     user deploy[:user]
     cwd deploy[:current_path]
@@ -27,6 +28,7 @@ node[:deploy].each do |application, deploy, gunicorn_processes|
   end
 
   execute "start-reporting-service" do
+    Chef::Log.info("Executing start-reporting-service")
     timeout 180
     user deploy[:user]
     cwd deploy[:current_path]

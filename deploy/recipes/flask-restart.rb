@@ -17,12 +17,14 @@ node[:deploy].each do |application, deploy, gunicorn_processes|
     cwd deploy[:current_path]
     environment 'HOME' => '/home/deploy'
     pids_file = "#{deploy[:deploy_to]}/shared/pids/gunicorn"
+    pid = File.foreach(pids_file).first(1)
+    command "kill -s TERM #{pid}"
+    action :run
 
-    if File.file?(pids_file)
-      pid = File.foreach(pids_file).first(1)
-      command "kill -s TERM #{pid}"
-      action :run
+    only_if do
+      File.exists?("#{deploy[:deploy_to]}/shared/pids/gunicorn")
     end
+
   end
 
   execute "start-reporting-service" do

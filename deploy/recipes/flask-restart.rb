@@ -24,7 +24,7 @@ node[:deploy].each do |application, deploy, gunicorn_processes|
     only_if do
       File.exists?("#{deploy[:deploy_to]}/shared/pids/gunicorn")
     end
-
+    notifies :run, 'execute[start-reporting-service]', :immediately
   end
 
   execute "start-reporting-service" do

@@ -16,8 +16,8 @@ node[:deploy].each do |application, deploy, gunicorn_processes|
     user deploy[:user]
     cwd deploy[:current_path]
     environment 'HOME' => '/home/deploy'
-    puts "node"
-    puts node
+    puts "my_puts"
+    puts "#{deploy[:deploy_to]}/shared/pids/gunicorn"
     command "sleep 1"
 
     # command "python_env/bin/gunicorn -w 4 reporting:app"

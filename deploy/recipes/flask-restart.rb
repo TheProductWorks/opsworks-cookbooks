@@ -17,8 +17,7 @@ node[:deploy].each do |application, deploy, gunicorn_processes|
     cwd deploy[:current_path]
     environment 'HOME' => '/home/deploy'
     pids_file = "#{deploy[:deploy_to]}/shared/pids/gunicorn"
-    pid = File.foreach(pids_file).first(1)
-    command "kill -s TERM #{pid}"
+    command "kill -s TERM $(head -n 1 #{pids_file})"
     action :run
 
     only_if do

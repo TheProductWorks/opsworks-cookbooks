@@ -1,5 +1,4 @@
 include_recipe 'deploy'
-require 'fileutils'
 
 node[:deploy].each do |application, deploy|
   if deploy[:application_type] != 'flask'
@@ -34,17 +33,15 @@ node[:deploy].each do |application, deploy|
     action :run
   end
 
-  execute "create-shared-pids-dir" do
-    user deploy[:user]
-    cwd deploy[:current_path]
-    environment 'HOME' => '/home/deploy'
-    pids_dir = "#{deploy[:deploy_to]}/shared/pids"
+  directory "#{deploy[:deploy_to]}/shared/pids" do
+    owner deploy[:user]
+    group deploy[:group]
+    mode '0755'
+    action :create
 
-    dirname = File.dirname(pids_dir)
-    unless File.directory?(dirname)
-      FileUtils.mkdir_p(dirname)
+    not_if do
+      File.exists?("/usr/local/#{application}")
     end
-
   end
 
   include_recipe "deploy::flask-restart"

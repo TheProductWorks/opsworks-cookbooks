@@ -44,5 +44,5 @@ node[:deploy].each do |application, deploy|
     end
   end
 
-  include_recipe "deploy::flask-restart"
+  include_recipe "deploy::flask-stop"
 end

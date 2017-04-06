@@ -1,8 +1,3 @@
-#
-# Cookbook Name:: deploy
-# Recipe:: flask-restart
-#
-
 include_recipe "deploy"
 
 node[:deploy].each do |application, deploy, gunicorn_processes|
@@ -27,21 +22,7 @@ node[:deploy].each do |application, deploy, gunicorn_processes|
 
   end
 
-  execute "start-reporting-service" do
-    Chef::Log.info("Executing start-reporting-service")
-    timeout 180
-    user deploy[:user]
-    cwd deploy[:current_path]
-    environment 'HOME' => '/home/deploy'
-    pids_file = "#{deploy[:deploy_to]}/shared/pids/gunicorn"
-    command "python_env/bin/gunicorn --workers 4 reporting:app --daemon --pid #{pids_file}"
-    # --error-logfile ./logs/gunicorn_error
-    action :run
-
-    only_if do
-      File.exists?(deploy[:current_path])
-    end
-  end
+  include_recipe "deploy::flask-start"
 end
 
 

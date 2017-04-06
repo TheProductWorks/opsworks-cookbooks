@@ -1,7 +1,7 @@
 
 node[:deploy].each do |app_name, deploy_config|
   if deploy_config[:application_type] != 'rails'
-    Chef::Log.debug("Skipping deploy::rails application #{app_name} as it is not a Rails app")
+    Chef::Log.info("Skipping deploy::rails application #{app_name} as it is not a Rails app")
     next
   end
 

@@ -12,12 +12,14 @@ node[:deploy].each do |application, deploy, gunicorn_processes|
   end
 
   execute "restart reporting server" do
-    timeout 20
+    timeout 120
     user deploy[:user]
     cwd deploy[:current_path]
     environment 'HOME' => '/home/deploy'
-    Chef::Log.info("gunicorn processes => #{gunicorn_processes}")
-    command "sleep 30"
+    puts "node"
+    puts node
+    command "sleep 1"
+
     # command "python_env/bin/gunicorn -w 4 reporting:app"
     action :run
 

@@ -32,10 +32,8 @@ node[:deploy].each do |application, deploy, gunicorn_processes|
     cwd deploy[:current_path]
     environment 'HOME' => '/home/deploy'
     pids_file = "#{deploy[:deploy_to]}/shared/pids/gunicorn"
-
-    command "sleep 1"
-
-    # command "python_env/bin/gunicorn --workers 4 reporting:app --daemon --pid #{pids_file} --error-logfile ./logs/gunicorn_error"
+    command "python_env/bin/gunicorn --workers 4 reporting:app --daemon --pid #{pids_file}"
+    # --error-logfile ./logs/gunicorn_error
     action :run
 
     only_if do

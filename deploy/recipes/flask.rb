@@ -40,7 +40,7 @@ node[:deploy].each do |application, deploy|
     action :create
 
     not_if do
-      File.exists?("/usr/local/#{application}")
+      File.exists?("#{deploy[:deploy_to]}/shared/pids")
     end
   end
 

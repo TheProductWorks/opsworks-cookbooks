@@ -11,8 +11,22 @@ node[:deploy].each do |application, deploy, gunicorn_processes|
     next
   end
 
-  execute "restart reporting server" do
-    timeout 120
+  execute "stop-reporting-service" do
+    timeout 180
+    user deploy[:user]
+    cwd deploy[:current_path]
+    environment 'HOME' => '/home/deploy'
+    pids_file = "#{deploy[:deploy_to]}/shared/pids/gunicorn"
+
+    if File.file?(pids_file):
+      pid = File.foreach(pids_file).first(1)
+      command "kill -s TERM #{pid}"
+      action :run
+    end
+  end
+
+  execute "start-reporting-service" do
+    timeout 180
     user deploy[:user]
     cwd deploy[:current_path]
     environment 'HOME' => '/home/deploy'
@@ -21,8 +35,6 @@ node[:deploy].each do |application, deploy, gunicorn_processes|
     command "sleep 1"
 
     # command "python_env/bin/gunicorn --workers 4 reporting:app --daemon --pid #{pids_file} --error-logfile ./logs/gunicorn_error"
-
-    # command "python_env/bin/gunicorn -w 4 reporting:app"
     action :run
 
     only_if do

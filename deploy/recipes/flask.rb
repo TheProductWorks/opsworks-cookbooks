@@ -48,5 +48,15 @@ node[:deploy].each do |application, deploy|
     end
   end
 
+  directory "#{deploy[:deploy_to]}/shared/logs" do
+    owner deploy[:user]
+    group deploy[:group]
+    mode '0755'
+    action :create
+    not_if do
+      File.exists?("#{deploy[:deploy_to]}/shared/logs")
+    end
+  end
+
   include_recipe "deploy::flask-restart"
 end

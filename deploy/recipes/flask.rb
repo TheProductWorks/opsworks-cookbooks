@@ -18,14 +18,19 @@ node[:deploy].each do |application, deploy|
   end
 
   execute "install-new-virtual-env" do
+    Chef::Log.info("Executing install-new-virtual-env")
     user deploy[:user]
     cwd deploy[:current_path]
     environment 'HOME' => '/home/deploy'
     command "virtualenv -p python3.6 python_env"
     action :run
+    not_if do
+      File.exists?("python_env")
+    end
   end
 
   execute "install-requirements-txt" do
+    Chef::Log.info("Executing install-requirements-txt")
     user deploy[:user]
     cwd deploy[:current_path]
     environment 'HOME' => '/home/deploy'
@@ -38,7 +43,6 @@ node[:deploy].each do |application, deploy|
     group deploy[:group]
     mode '0755'
     action :create
-
     not_if do
       File.exists?("#{deploy[:deploy_to]}/shared/pids")
     end

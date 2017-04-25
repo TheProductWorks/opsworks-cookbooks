@@ -1,6 +1,6 @@
 node[:deploy].each do |app_name, deploy_config|
-  if deploy[:application_type] != 'rails'
-    Chef::Log.info("Skipping actioncable-config application #{application} as it is not a Rails app")
+  if deploy_config[:application_type] != 'rails'
+    Chef::Log.info("Skipping actioncable-config::default application #{app_name} as it is not a Rails app")
     next
   end
 

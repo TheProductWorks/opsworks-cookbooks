@@ -11,6 +11,7 @@ node[:deploy].each do |application, deploy|
     next
   end
 
+  # RESTART the server, if already started
   execute "restart Server" do
     user deploy[:user]
     cwd deploy[:current_path]
@@ -18,9 +19,20 @@ node[:deploy].each do |application, deploy|
     command "/usr/local/tp_api/tp_api/bin/tp_api restart"
     action :run
 
-    only_if do
-      File.exists?(deploy[:current_path])
-    end
+    guard_interpreter :bash
+    only_if '/usr/local/tp_api/tp_api/bin/tp_api ping'
+  end
+
+  # START the server, if not already started
+  execute "start Server" do
+    user deploy[:user]
+    cwd deploy[:current_path]
+    environment 'HOME' => '/home/deploy'
+    command "/usr/local/tp_api/tp_api/bin/tp_api start"
+    action :run
+
+    guard_interpreter :bash
+    not_if '/usr/local/tp_api/tp_api/bin/tp_api ping'
   end
 
 end

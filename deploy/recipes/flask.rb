@@ -25,7 +25,7 @@ node[:deploy].each do |application, deploy|
     command "virtualenv -p python3.6 python_env"
     action :run
     not_if do
-      Dir.exists?("python_env")
+      Dir.exists?("#{deploy[:current_path]}/python_env")
     end
   end
 

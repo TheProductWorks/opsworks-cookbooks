@@ -1,5 +1,5 @@
 upstream gunicorn_<%= @application[:domains].first %> {
- server 127.0.0.1:<%= @application[:gunicorn][:port]%>;
+ server 127.0.0.1:<%= @application[:gunicorn][:port] || 8000 %>;
 }
 
 server {

@@ -1,8 +1,6 @@
 include_recipe 'deploy'
 
 node[:deploy].each do |application, deploy|
-
-
   if deploy["application_type"] != 'flask'
     Chef::Log.info("Skipping deploy::flask application #{application} as it is not a Flask app")
     next
@@ -27,7 +25,7 @@ node[:deploy].each do |application, deploy|
     command "virtualenv -p python3.6 python_env"
     action :run
     not_if do
-      File.exists?("python_env")
+      Dir.exists?("python_env")
     end
   end
 
@@ -46,7 +44,7 @@ node[:deploy].each do |application, deploy|
     mode '0755'
     action :create
     not_if do
-      File.exists?("#{deploy[:deploy_to]}/shared/pids")
+      Dir.exists?("#{deploy[:deploy_to]}/shared/pids")
     end
   end
 
@@ -56,7 +54,7 @@ node[:deploy].each do |application, deploy|
     mode '0755'
     action :create
     not_if do
-      File.exists?("#{deploy[:deploy_to]}/shared/logs")
+      Dir.exists?("#{deploy[:deploy_to]}/shared/logs")
     end
   end
 

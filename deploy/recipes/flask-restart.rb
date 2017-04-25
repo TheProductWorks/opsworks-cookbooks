@@ -6,8 +6,8 @@
 include_recipe "deploy"
 
 node[:deploy].each do |application, deploy, gunicorn_processes|
-  if deploy[:application_type] != 'flask'
-    Chef::Log.info("Skipping deploy::flask application #{application} as it is not a Flask app")
+  if deploy["application_type"] != 'flask'
+    Chef::Log.info("Skipping deploy::flask-restart application #{application} as it is not a Flask app")
     next
   end
 
@@ -39,7 +39,7 @@ node[:deploy].each do |application, deploy, gunicorn_processes|
     action :run
 
     only_if do
-      File.exists?(deploy[:current_path])
+      Dir.exists?(deploy[:current_path])
     end
   end
 end

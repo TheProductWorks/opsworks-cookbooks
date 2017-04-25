@@ -1,4 +1,9 @@
 node[:deploy].each do |app_name, deploy_config|
+  if deploy[:application_type] != 'rails'
+    Chef::Log.info("Skipping actioncable-config application #{application} as it is not a Rails app")
+    next
+  end
+
   # determine root folder of new app deployment
   app_root = "#{deploy_config[:deploy_to]}/current"
 

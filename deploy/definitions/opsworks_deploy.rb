@@ -191,6 +191,16 @@ define :opsworks_deploy do
     end
   end
 
+  #
+  # Flask / Python app handling with gunicorn
+  #
+  if deploy[:application_type] == 'flask' && node[:opsworks][:instance][:layers].include?('pythonapp')
+    gunicorn_web_app do
+      application application
+      deploy deploy
+    end
+  end
+
   bash "Enable selinux var_log_t target for application log files" do
     dir_path_log = "#{deploy[:deploy_to]}/shared/log"
     context = "var_log_t"

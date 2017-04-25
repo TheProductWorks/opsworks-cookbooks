@@ -35,7 +35,15 @@ node[:deploy].each do |application, deploy, gunicorn_processes|
     environment 'HOME' => '/home/deploy'
     pids_file = "#{deploy[:deploy_to]}/shared/pids/gunicorn"
     logs_file = "#{deploy[:deploy_to]}/shared/logs/log"
-    command "python_env/bin/gunicorn --workers 4 reporting:app --daemon --pid #{pids_file} --error-logfile #{logs_file}"
+    if deploy["gunicorn"]
+      port = deploy["gunicorn"]["port"]
+      workers = deploy["gunicorn"]["workers"]
+    end
+    # Defaults for port and worker count
+    port ||= 8000
+    workers ||= 4
+
+    command "python_env/bin/gunicorn --workers #{workers} reporting:app --daemon --pid #{pids_file} --error-logfile #{logs_file} --bind :#{port}"
     action :run
 
     only_if do

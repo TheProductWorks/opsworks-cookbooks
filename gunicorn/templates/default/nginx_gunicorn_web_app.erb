@@ -77,8 +77,10 @@ server {
     stub_status on;
     access_log off;
     allow 127.0.0.1;
-    <% @application[:nginx][:subnets].each do |subnet| -%>
-      allow <%= subnet %>;
+    <% if @application[:nginx] && @application[:nginx][:subnets] %>
+      <% @application[:nginx][:subnets].each do |subnet| -%>
+        allow <%= subnet %>;
+      <% end -%>
     <% end -%>
     deny all;
   }

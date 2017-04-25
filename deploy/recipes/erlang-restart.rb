@@ -32,7 +32,6 @@ node[:deploy].each do |application, deploy|
     command "/usr/local/tp_api/tp_api/bin/tp_api start"
     action :run
 
-    guard_interpreter :bash
     not_if do
       system('/usr/local/tp_api/tp_api/bin/tp_api ping')
     end

@@ -19,8 +19,9 @@ node[:deploy].each do |application, deploy|
     command "/usr/local/tp_api/tp_api/bin/tp_api restart"
     action :run
 
-    guard_interpreter :bash
-    only_if '/usr/local/tp_api/tp_api/bin/tp_api ping'
+    only_if do
+      system('/usr/local/tp_api/tp_api/bin/tp_api ping')
+    end
   end
 
   # START the server, if not already started
@@ -32,7 +33,9 @@ node[:deploy].each do |application, deploy|
     action :run
 
     guard_interpreter :bash
-    not_if '/usr/local/tp_api/tp_api/bin/tp_api ping'
+    not_if do
+      system('/usr/local/tp_api/tp_api/bin/tp_api ping')
+    end
   end
 
 end

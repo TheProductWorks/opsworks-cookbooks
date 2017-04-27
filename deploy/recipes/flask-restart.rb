@@ -34,7 +34,7 @@ node[:deploy].each do |application, deploy, gunicorn_processes|
     cwd deploy[:current_path]
     environment 'HOME' => '/home/deploy'
     pids_file = "#{deploy[:deploy_to]}/shared/pids/gunicorn"
-    logs_file = "#{deploy[:deploy_to]}/shared/logs/log"
+    logs_file = "#{deploy[:deploy_to]}/shared/log/gunicorn.log"
     if deploy["gunicorn"]
       port = deploy["gunicorn"]["port"]
       workers = deploy["gunicorn"]["workers"]

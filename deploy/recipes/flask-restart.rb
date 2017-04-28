@@ -36,8 +36,9 @@ node[:deploy].each do |application, deploy, gunicorn_processes|
     cwd deploy[:current_path]
     environment 'HOME' => '/home/deploy'
     config_file = "#{deploy[:deploy_to]}/shared/config/gunicorn.conf"
+    vars = deploy['environment'].map{ |name, val| "#{name}=#{value}" }.join(" ")
 
-    command "python_env/bin/gunicorn -c #{config_file} reporting:app"
+    command "python_env/bin/gunicorn -c #{config_file} #{vars} reporting:app"
     action :run
 
     only_if do

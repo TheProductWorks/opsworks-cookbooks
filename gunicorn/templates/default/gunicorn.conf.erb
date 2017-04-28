@@ -3,7 +3,4 @@ daemon = True
 pid = '<%= @pids_file %>'
 errorlog = '<%= @logs_file %>'
 bind = ':<%= @port %>'
-workers <%= @workers %>
-
-reporting:app
-
+workers = <%= @workers %>

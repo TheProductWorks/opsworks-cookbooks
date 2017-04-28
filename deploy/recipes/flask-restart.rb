@@ -11,6 +11,8 @@ node[:deploy].each do |application, deploy, gunicorn_processes|
     next
   end
 
+  include_recipe "gunicorn"
+
   execute "stop-reporting-service" do
     Chef::Log.info("Executing stop-reporting-service")
     timeout 180
@@ -33,17 +35,9 @@ node[:deploy].each do |application, deploy, gunicorn_processes|
     user deploy[:user]
     cwd deploy[:current_path]
     environment 'HOME' => '/home/deploy'
-    pids_file = "#{deploy[:deploy_to]}/shared/pids/gunicorn"
-    logs_file = "#{deploy[:deploy_to]}/shared/log/gunicorn.log"
-    if deploy["gunicorn"]
-      port = deploy["gunicorn"]["port"]
-      workers = deploy["gunicorn"]["workers"]
-    end
-    # Defaults for port and worker count
-    port ||= 8000
-    workers ||= 4
+    config_file = "#{deploy[:deploy_to]}/shared/config/gunicorn.conf"
 
-    command "python_env/bin/gunicorn --workers #{workers} reporting:app --daemon --pid #{pids_file} --error-logfile #{logs_file} --bind :#{port}"
+    command "python_env/bin/gunicorn -c #{config_file} reporting:app"
     action :run
 
     only_if do

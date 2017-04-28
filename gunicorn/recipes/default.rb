@@ -22,7 +22,7 @@ node[:deploy].each do |application, deploy|
     port ||= 8000
     workers ||= 4
 
-    source "gunicorn_conf.erb"
+    source "gunicorn.conf.erb"
     variables(
       :deploy => deploy,
       :application => application,

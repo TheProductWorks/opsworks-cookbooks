@@ -194,6 +194,7 @@ define :opsworks_deploy do
   #
   # Flask / Python app handling with gunicorn
   #
+  Chef::Log.info("Checking Flask Nginx setup #{application} with type #{deploy[:application_type]}")
   if deploy[:application_type] == 'flask' && node[:opsworks][:instance][:layers].include?('pythonapp')
     gunicorn_web_app do
       application application

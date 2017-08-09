@@ -5,27 +5,14 @@
 CWD='/usr/local/src'
 REBAR_LOCATION="#{CWD}/rebar3"
 
-git REBAR_LOCATION do
-  Chef::Log.info('Cloning Rebar3 repo')
-  repository 'git@github.com:erlang/rebar3.git'
-  revision 'master'
-  action :sync
-  notifies :run, 'bash[compile_rebar3]', :immediately
-end
-
-bash 'compile_rebar3' do
-  Chef::Log.info('Compiling Rebar3')
+execute 'install' do
   cwd CWD
   user 'root'
+  command "wget https://s3.amazonaws.com/rebar3/rebar3"
 
-  code <<-EOH
-    (cd #{REBAR_LOCATION} && ./bootstrap)
-  EOH
-
-  action :nothing
   not_if "rebar3 --version"
-  notifies :run, 'link[setup_rebar3_executable]', :immediately
 end
+
 
 link 'setup_rebar3_executable' do
   user 'root'

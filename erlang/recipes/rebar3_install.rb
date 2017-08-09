@@ -19,5 +19,5 @@ link 'setup_rebar3_executable' do
 
   target_file "/usr/bin/rebar3"
   Chef::Log.info('Linking Rebar3')
-  to "#{REBAR_LOCATION}/rebar3"
+  to "#{REBAR_LOCATION}"
 end

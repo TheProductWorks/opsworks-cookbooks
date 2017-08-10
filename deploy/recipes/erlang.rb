@@ -40,10 +40,10 @@ node[:deploy].each do |application, deploy|
     end
   end
 
-  execute 'Generate and compile release' do
+  execute 'Change owner' do
     user "root"
 
-    command "chown -R #{deploy[:user]}:#{deploy[:group]} /usr/local/tp_api/tp_api"
+    command "chown -R #{deploy[:user]}:#{deploy[:group]} /usr/local/tp_api/tp_api/*"
     action :run
   end
 

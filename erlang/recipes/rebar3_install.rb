@@ -8,7 +8,7 @@ REBAR_LOCATION="#{CWD}/rebar3"
 execute 'install' do
   cwd CWD
   user 'root'
-  command "wget https://s3.amazonaws.com/rebar3/rebar3"
+  command "wget https://s3.amazonaws.com/rebar3/rebar3 && chmod a+x rebar3"
   action :run
 
   not_if "[ -f rebar3 ]" # If we already downloaded it, no need to do again

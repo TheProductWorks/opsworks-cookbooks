@@ -11,7 +11,7 @@ execute 'install' do
   command "wget https://s3.amazonaws.com/rebar3/rebar3"
   action :run
 
-  not_if "rebar3 --version"
+  not_if "[ -f rebar3 ]" # If we already downloaded it, no need to do again
 end
 
 

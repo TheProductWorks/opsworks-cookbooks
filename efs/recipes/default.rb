@@ -2,7 +2,7 @@ node[:efs][:devices].each do |device, options|
   directory options[:mount_point] do
     recursive true
     action :create
-    mode "0755"
+    mode "777"
   end
 
   if options[:mount_point].nil? || options[:mount_point].empty?

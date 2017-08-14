@@ -1,4 +1,4 @@
-node[:ebs][:devices].each do |device, options|
+node[:efs][:devices].each do |device, options|
   directory options[:mount_point] do
     recursive true
     action :create

@@ -13,12 +13,13 @@ node[:deploy].each do |application, deploy|
 
   execute "restart Server" do
     user deploy[:user]
+    cwd deploy[:current_path]
     environment 'HOME' => '/home/deploy'
     command "/usr/local/tp_api/tp_phoenix/bin/tp_phoenix restart"
     action :run
 
     only_if do
-      File.exists?("/usr/local/tp_api/tp_phoenix/bin/tp_phoenix")
+      system "/usr/local/tp_api/tp_phoenix/bin/tp_phoenix ping"
     end
   end
 

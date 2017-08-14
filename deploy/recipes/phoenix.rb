@@ -70,12 +70,5 @@ node[:deploy].each do |application, deploy|
     command "cp -r deploy[:current_path]/rel/tp_phoenix /usr/local/tp_api"
     user "deploy"
   end
-
-  # deploy@tp-api2:/srv/www/tp_phoenix/current$ /usr/local/tp_api/tp_phoenix/bin/tp_phoenix start
-  # deploy@tp-api2:/srv/www/tp_phoenix/current$ /usr/local/tp_api/tp_phoenix/bin/tp_phoenix attach
-
-  # mix release
-  #  start the node:
-  #  deploy[:current_path]/rel/tp_phoenix/bin/tp_phoenix start
-  #  deploy[:current_path]/rel/tp_phoenix/bin/tp_phoenix stop
+  include_recipe "deploy::phoenix-restart"
 end

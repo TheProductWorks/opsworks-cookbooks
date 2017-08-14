@@ -16,4 +16,4 @@
 
 default[:efs][:devices] ||= {}
 
-include_attribute "ebs::customize"
+include_attribute "efs::customize"

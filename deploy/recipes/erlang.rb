@@ -40,6 +40,17 @@ node[:deploy].each do |application, deploy|
     end
   end
 
+  directory "/usr/local/#{application}/#{application}/log" do
+    owner deploy[:user]
+    group deploy[:group]
+    mode '0755'
+    action :create
+
+    not_if do
+      File.exists?("/usr/local/#{application}/#{application}/log")
+    end
+  end
+
   execute 'Change owner' do
     user "root"
 

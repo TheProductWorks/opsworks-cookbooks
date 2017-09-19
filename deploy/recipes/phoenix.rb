@@ -67,7 +67,7 @@ node[:deploy].each do |application, deploy|
   end
 
   execute "copy_release" do
-    command "cp -r deploy[:current_path]/rel/tp_phoenix /usr/local/tp_api"
+    command "cp -r #{deploy[:current_path]}/rel/tp_phoenix /usr/local/tp_api"
     user "deploy"
   end
   include_recipe "deploy::phoenix-restart"

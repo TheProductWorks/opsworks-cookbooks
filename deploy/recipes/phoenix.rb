@@ -66,8 +66,19 @@ node[:deploy].each do |application, deploy|
     action :run
   end
 
+  directory "/usr/local/tp_api/#{application}" do
+    owner deploy[:user]
+    group deploy[:group]
+    mode '0755'
+    action :create
+
+    not_if do
+      File.exists?("/usr/local/tp_api/#{application}")
+    end
+  end
+
   execute "copy_release" do
-    command "cp -r #{deploy[:current_path]}/rel/tp_phoenix /usr/local/tp_api"
+    command "cp -r #{deploy[:current_path]}/rel/tp_phoenix/{bin,lib,releases} /usr/local/tp_api/tp_phoenix/"
     user "deploy"
   end
   include_recipe "deploy::phoenix-restart"

@@ -42,7 +42,7 @@ node[:deploy].each do |application, deploy|
     user 'deploy'
     cwd deploy[:current_path]
     environment env_vars
-    command "mix local.hex --force && mix local.rebar --force && mix deps.get --only prod"
+    command "MIX_ENV=dev mix local.hex --force && mix local.rebar --force && mix deps.get --only prod"
     action :run
   end
 
@@ -50,7 +50,7 @@ node[:deploy].each do |application, deploy|
     user 'deploy'
     cwd deploy[:current_path]
     environment env_vars
-    command "MIX_ENV=prod mix deps.clean --all && mix deps.update erlware_commons relx && mix compile"
+    command "MIX_ENV=dev mix compile"
     action :run
   end
 
@@ -81,13 +81,9 @@ node[:deploy].each do |application, deploy|
     end
   end
 
-  execute "copy_release erts-7.3" do
-    command "cp -r #{deploy[:current_path]}/rel/tp_phoenix/erts-7.3 /usr/local/tp_api/#{application}/"
+  execute "copy_release erts-*" do
+    command "cp -r #{deploy[:current_path]}/rel/tp_phoenix/erts-* /usr/local/tp_api/#{application}/"
     user "deploy"
-
-    not_if do
-      File.exists?("/usr/local/tp_api/#{application}/erts-7.3")
-    end
   end
 
   execute "copy_release bin" do

@@ -6,6 +6,10 @@ node[:deploy].each do |application, deploy|
     next
   end
 
+  ## Setup the env vars
+
+  env_vars = deploy[:environment_variables].merge({'MIX_HOME' => '/home/deploy/.mix', 'MIX_ENV' => 'prod', 'HEX_HOME' => '/home/deploy/.hex', 'HOME' => '/home/deploy'})
+
   opsworks_deploy_dir do
     user deploy[:user]
     group deploy[:group]
@@ -37,7 +41,7 @@ node[:deploy].each do |application, deploy|
   execute 'Get dependencies' do
     user 'deploy'
     cwd deploy[:current_path]
-    environment 'MIX_HOME' => '/home/deploy/.mix', 'HEX_HOME' => '/home/deploy/.hex', 'HOME' => '/home/deploy'
+    environment env_vars
     command "mix local.hex --force && mix local.rebar --force && mix deps.get --only prod"
     action :run
   end
@@ -45,7 +49,7 @@ node[:deploy].each do |application, deploy|
   execute 'Compile' do
     user 'deploy'
     cwd deploy[:current_path]
-    environment 'MIX_HOME' => '/home/deploy/.mix', 'MIX_ENV' => 'prod', 'HEX_HOME' => '/home/deploy/.hex', 'HOME' => '/home/deploy'
+    environment env_vars
     command "MIX_ENV=prod mix compile"
     action :run
   end
@@ -53,7 +57,7 @@ node[:deploy].each do |application, deploy|
   execute 'Digest' do
     user 'deploy'
     cwd deploy[:current_path]
-    environment 'MIX_HOME' => '/home/deploy/.mix', 'MIX_ENV' => 'prod', 'HEX_HOME' => '/home/deploy/.hex', 'HOME' => '/home/deploy'
+    environment env_vars
     command "MIX_ENV=prod mix phoenix.digest"
     action :run
   end
@@ -61,7 +65,7 @@ node[:deploy].each do |application, deploy|
   execute 'Make the release' do
     user 'deploy'
     cwd deploy[:current_path]
-    environment 'MIX_HOME' => '/home/deploy/.mix', 'MIX_ENV' => 'prod', 'HEX_HOME' => '/home/deploy/.hex', 'HOME' => '/home/deploy'
+    environment env_vars
     command "MIX_ENV=prod mix release"
     action :run
   end

@@ -50,7 +50,7 @@ node[:deploy].each do |application, deploy|
     user 'deploy'
     cwd deploy[:current_path]
     environment env_vars
-    command "MIX_ENV=prod mix compile"
+    command "MIX_ENV=prod mix deps.clean --all && mix deps.update erlware_commons relx && mix compile"
     action :run
   end
 

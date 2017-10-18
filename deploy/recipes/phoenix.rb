@@ -46,6 +46,14 @@ node[:deploy].each do |application, deploy|
     action :run
   end
 
+  execute 'Init the release' do
+    user 'deploy'
+    cwd deploy[:current_path]
+    environment env_vars
+    command "MIX_ENV=prod mix release.init"
+    action :run
+  end
+
   execute 'Compile' do
     user 'deploy'
     cwd deploy[:current_path]

@@ -90,22 +90,22 @@ node[:deploy].each do |application, deploy|
   end
 
   execute "copy_release erts-*" do
-    command "cp -r #{deploy[:current_path]}/rel/tp_phoenix/erts-* /usr/local/tp_api/#{application}/"
+    command "cp -r #{deploy[:current_path]}/_build/prod/rel/tp_phoenix/erts-* /usr/local/tp_api/#{application}/"
     user "deploy"
   end
 
   execute "copy_release bin" do
-    command "cp -r #{deploy[:current_path]}/rel/tp_phoenix/bin /usr/local/tp_api/#{application}/"
+    command "cp -r #{deploy[:current_path]}/_build/prod/rel/tp_phoenix/bin /usr/local/tp_api/#{application}/"
     user "deploy"
   end
 
   execute "copy_release lib" do
-    command "cp -r #{deploy[:current_path]}/rel/tp_phoenix/lib /usr/local/tp_api/#{application}/"
+    command "cp -r #{deploy[:current_path]}/_build/prod/rel/tp_phoenix/lib /usr/local/tp_api/#{application}/"
     user "deploy"
   end
 
   execute "copy_release releases" do
-    command "cp -r #{deploy[:current_path]}/rel/tp_phoenix/releases /usr/local/tp_api/#{application}/"
+    command "cp -r #{deploy[:current_path]}/_build/prod/rel/tp_phoenix/releases /usr/local/tp_api/#{application}/"
     user "deploy"
   end
 

@@ -50,7 +50,7 @@ node[:deploy].each do |application, deploy|
     user 'deploy'
     cwd deploy[:current_path]
     environment env_vars
-    command "mix do deps.get, compile"
+    command "MIX_ENV=prod mix compile"
     action :run
   end
 
@@ -58,7 +58,7 @@ node[:deploy].each do |application, deploy|
     user 'deploy'
     cwd deploy[:current_path]
     environment env_vars
-    command "MIX_ENV=prod mix phoenix.digest"
+    command "MIX_ENV=prod mix phx.digest"
     action :run
   end
 

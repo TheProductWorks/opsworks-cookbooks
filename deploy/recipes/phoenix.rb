@@ -89,9 +89,28 @@ node[:deploy].each do |application, deploy|
     end
   end
 
-  execute "copy_release files" do
-    command "cp -r #{deploy[:current_path]}/_build/prod/rel/tp_phoenix/* /usr/local/tp_api/#{application}/"
+  execute "copy_release files - bin" do
+    command "cp -r #{deploy[:current_path]}/_build/prod/rel/tp_phoenix/bin /usr/local/tp_api/#{application}/"
     user "deploy"
   end
+
+  execute "copy_release files - lib" do
+    command "cp -r #{deploy[:current_path]}/_build/prod/rel/tp_phoenix/lib /usr/local/tp_api/#{application}/"
+    user "deploy"
+  end
+
+  execute "copy_release files - releases" do
+    command "cp -r #{deploy[:current_path]}/_build/prod/rel/tp_phoenix/releases /usr/local/tp_api/#{application}/"
+    user "deploy"
+  end
+
+  execute "copy_release files - erts" do
+    command "cp -r #{deploy[:current_path]}/_build/prod/rel/tp_phoenix/#{deploy["erts"]} /usr/local/tp_api/#{application}/"
+    user "deploy"
+    not_if do
+      File.exists?("/usr/local/tp_api/#{application}/#{deploy["erts"]}")
+    end
+  end
+
   include_recipe "deploy::phoenix-restart"
 end

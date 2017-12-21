@@ -23,6 +23,17 @@ node[:deploy].each do |application, deploy|
     end
   end
 
+  execute "start Server" do
+    user deploy[:user]
+    cwd deploy[:current_path]
+    environment 'HOME' => '/home/deploy'
+    command "/usr/local/tp_api/tp_phoenix/bin/tp_phoenix start"
+    action :run
+
+    not_if do
+      system "/usr/local/tp_api/tp_phoenix/bin/tp_phoenix ping"
+    end
+  end
 end
 
 

@@ -1,10 +1,12 @@
 include_recipe 'deploy'
 
 node[:deploy].each do |application, deploy|
+  Chef::Log.info("CHECKING application #{application} - #{deploy["application_type"]}")
   if deploy["application_type"] != 'elixir'
     Chef::Log.info("Skipping deploy::phoenix application #{application} as it is not a Phoenix app")
     next
   end
+  Chef::Log.info("POST CHECKING application #{application} - #{deploy["application_type"]}")
 
   ## Setup the env vars
 

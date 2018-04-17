@@ -91,6 +91,17 @@ node[:deploy].each do |application, deploy|
     end
   end
 
+  directory "/usr/local/tp_api/#{application}/var" do
+    owner deploy[:user]
+    group deploy[:group]
+    mode '0755'
+    action :create
+
+    not_if do
+      File.exists?("/usr/local/tp_api/#{application}/var")
+    end
+  end
+
   execute "copy_release files - bin" do
     command "cp -r #{deploy[:current_path]}/_build/prod/rel/tp_phoenix/bin /usr/local/tp_api/#{application}/"
     user "deploy"

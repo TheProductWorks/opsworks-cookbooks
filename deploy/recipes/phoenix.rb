@@ -80,6 +80,17 @@ node[:deploy].each do |application, deploy|
     action :run
   end
 
+  directory "/usr/local/tp_api" do
+    owner deploy[:user]
+    group deploy[:group]
+    mode '0755'
+    action :create
+
+    not_if do
+      File.exists?("/usr/local/tp_api")
+    end
+  end
+
   directory "/usr/local/tp_api/#{application}" do
     owner deploy[:user]
     group deploy[:group]

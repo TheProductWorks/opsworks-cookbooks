@@ -113,6 +113,10 @@ node[:deploy].each do |application, deploy|
     end
   end
 
+  execute "fix owner of /var directory" do
+    command " sudo chown -R deploy:www-data /usr/local/tp_api/#{application}/var"
+  end
+
   execute "copy_release files - bin" do
     command "cp -r #{deploy[:current_path]}/_build/prod/rel/tp_phoenix/bin /usr/local/tp_api/#{application}/"
     user "deploy"

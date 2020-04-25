@@ -16,11 +16,11 @@ node[:deploy].each do |application, deploy|
     user deploy[:user]
     cwd deploy[:current_path]
     environment env_vars
-    command "/usr/local/tp_api/tp_phoenix/bin/tp_phoenix start"
+    command "/usr/local/tp_api/tp_phoenix/bin/tp_phoenix daemon"
     action :run
 
     not_if do
-      system "/usr/local/tp_api/tp_phoenix/bin/tp_phoenix ping"
+      system "/usr/local/tp_api/tp_phoenix/bin/tp_phoenix pid"
     end
   end
 
@@ -32,7 +32,7 @@ node[:deploy].each do |application, deploy|
     action :run
 
     only_if do
-      system "/usr/local/tp_api/tp_phoenix/bin/tp_phoenix ping"
+      system "/usr/local/tp_api/tp_phoenix/bin/tp_phoenix pid"
     end
   end
 end
